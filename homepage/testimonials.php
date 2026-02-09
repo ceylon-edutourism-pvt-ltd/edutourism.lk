@@ -12,12 +12,11 @@ try {
     die("Database Connection Failed: " . $e->getMessage());
 }
 
-// Get approved reviews from database
+
 $stmt = $pdo->prepare("SELECT * FROM reviews WHERE status = 'approved' ORDER BY created_at DESC");
 $stmt->execute();
 $reviews = $stmt->fetchAll();
 
-// YouTube embed function
 function getYouTubeEmbedURL($url) {
     if (empty($url)) return '';
     
@@ -234,21 +233,9 @@ function getYouTubeEmbedURL($url) {
 <!-- Testimonial Section Begin -->
 <div class="testimonial-section">
     <div class="container-fluid">
-        <?php
-        $testimonial_texts = [
-            'en' => [
-                'title' => 'What Our Participants Say',
-                'subtitle' => 'Authentic experiences from our program participants'
-            ],
-            'si' => [
-                'title' => 'සහභාගීවුවන්ගේ අදහස්',
-                'subtitle' => 'අපගේ වැඩසටහන් සහභාගිවන්නන්ගේ සැබෑ අත්දැකීම්'
-            ]
-        ];
-        ?>
         <div class="section-title">
-            <h2><?php echo $testimonial_texts[$lang]['title']; ?></h2>
-            <p><?php echo $testimonial_texts[$lang]['subtitle']; ?></p>
+            <h2>What Our Participants Say</h2>
+            <p>Authentic experiences from our program participants</p>
         </div>
 
         <div class="testimonial-container">
@@ -259,7 +246,7 @@ function getYouTubeEmbedURL($url) {
                             <div class="testimonial-card-wrapper">
                                 <div class="testimonial-box">
                                     <div class="testimonial-content">
-                                        <p><?php echo nl2br(htmlspecialchars($lang == 'si' && !empty($review['content_si']) ? $review['content_si'] : $review['content_en'])); ?></p>
+                                        <p><?php echo nl2br(htmlspecialchars($review['content_en'])); ?></p>
                                     </div>
                                     
                                     <!-- Add YouTube video embed if available -->
@@ -308,12 +295,8 @@ function getYouTubeEmbedURL($url) {
                     <div class="col-12 text-center py-5">
                         <div class="no-reviews-message">
                             <i class="fa fa-comments-o fa-3x text-muted mb-3"></i>
-                            <h3 class="text-muted">
-                                <?php echo ($lang == 'si') ? 'දැනට සාක්ෂි නොමැත' : 'No testimonials available at the moment'; ?>
-                            </h3>
-                            <p class="text-muted">
-                                <?php echo ($lang == 'si') ? 'කරුණාකර පසුව නැවත පරීක්ෂා කරන්න.' : 'Please check back later for new testimonials.'; ?>
-                            </p>
+                            <h3 class="text-muted">No testimonials available at the moment</h3>
+                            <p class="text-muted">Please check back later for new testimonials.</p>
                         </div>
                     </div>
                 </div>

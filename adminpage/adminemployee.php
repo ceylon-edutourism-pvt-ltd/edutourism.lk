@@ -411,15 +411,15 @@ input:focus, select:focus {
     <form method="post" class="form-inline">
         <div class="form-group">
             <label>Full Name</label>
-            <input type="text" name="name" placeholder="John Doe" required>
+            <input type="text" name="name" placeholder="Gayan Rajapaksha" required>
         </div>
         <div class="form-group">
             <label>Username</label>
-            <input type="text" name="username" placeholder="johndoe" required>
+            <input type="text" name="username" placeholder="gayanraj" required>
         </div>
         <div class="form-group">
             <label>Email</label>
-            <input type="email" name="email" placeholder="john@example.com" required>
+            <input type="email" name="email" placeholder="gayanraj@outlook.com" required>
         </div>
         <div class="form-group">
             <label>Role</label>

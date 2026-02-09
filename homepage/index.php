@@ -1,8 +1,8 @@
 <?php
 $active = "home"; 
 include("functions.php");
-include("language.php");
 include("header.php");
+include("hero_section.php");
 include("db.php");
 // Fetch active tours from database
 $tours_query = "SELECT * FROM tours WHERE status = 'active' AND tour_status = 'upcoming' ORDER BY created_at DESC";
@@ -17,36 +17,8 @@ $tours_result = mysqli_query($con, $tours_query);
 <section class="tour-showcase">
     <div class="tour-container">
         <div class="tour-section-heading">
-            <?php
-            // Language-based tour section translations
-            $tour_texts = [
-                'en' => [
-                    'heading' => 'Up Coming Tours',
-                    'subheading' => 'Seats are limited – don\'t miss this opportunity!',
-                    'view_all' => 'View All Tours',
-                    'view_details' => 'View Details',
-                    'days' => 'Days',
-                    'combined' => 'Combined',
-                    'premium' => 'Premium',
-                    'regular' => 'Regular'
-                ],
-                'si' => [
-                    'heading' => 'ඉදිරි සංචාර',
-                    'subheading' => 'ඉඩ සීමිතයි - මෙම අවස්ථාව මඟ නොහරින්න!',
-                    'view_all' => 'සියලුම සංචාර බලන්න',
-                    'view_details' => 'විස්තර බලන්න',
-                    'days' => 'දින',
-                    'combined' => 'ඒකාබද්ධ',
-                    'premium' => 'ප්‍රිමියම්',
-                    'regular' => 'සාමාන්‍ය'
-                ]
-            ];
-
-            // Ensure language is set, default to English
-            $lang = isset($_SESSION['site_language']) ? $_SESSION['site_language'] : 'en';
-            ?>
-            <h2><?php echo $tour_texts[$lang]['heading']; ?></h2>
-            <p><?php echo $tour_texts[$lang]['subheading']; ?></p>
+            <h2>Up Coming Tours</h2>
+            <p>Seats are limited – don't miss this opportunity!</p>
         </div>
         
         <div class="tour-cards-wrapper">
@@ -58,27 +30,27 @@ $tours_result = mysqli_query($con, $tours_query);
                             <div class="tour-card-inner">
                                 <div class="tour-card-image">
                                     <?php if ($tour['tour_type'] == 'combined'): ?>
-                                        <div class="tour-discount-badge"><?php echo $tour_texts[$lang]['combined']; ?></div>
+                                        <div class="tour-discount-badge">Combined</div>
                                     <?php elseif ($tour['tour_type'] == 'premium'): ?>
-                                        <div class="tour-discount-badge premium"><?php echo $tour_texts[$lang]['premium']; ?></div>
+                                        <div class="tour-discount-badge premium">Premium</div>
                                     <?php endif; ?>
                                     
                                     <?php if (!empty($tour['image_path']) && file_exists($tour['image_path'])): ?>
-                                        <img src="<?php echo htmlspecialchars($tour['image_path']); ?>" alt="<?php echo htmlspecialchars($tour['title_' . $lang]); ?>">
+                                        <img src="<?php echo htmlspecialchars($tour['image_path']); ?>" alt="<?php echo htmlspecialchars($tour['title_en']); ?>">
                                     <?php else: ?>
-                                        <img src="img/tours/default-tour.png" alt="<?php echo htmlspecialchars($tour['title_' . $lang]); ?>">
+                                        <img src="img/tours/default-tour.png" alt="<?php echo htmlspecialchars($tour['title_en']); ?>">
                                     <?php endif; ?>
                                 </div>
                                 <div class="tour-card-content">
                                     <div class="tour-card-header">
-                                        <h3 class="tour-title"><?php echo htmlspecialchars($tour['title_' . $lang]); ?></h3>
+                                        <h3 class="tour-title"><?php echo htmlspecialchars($tour['title_en']); ?></h3>
                                     </div>
                                     <div class="tour-details">
                                         <div class="tour-meta">
-                                            <span><i class="fa fa-clock-o"></i> <?php echo $tour['duration']; ?> <?php echo $tour_texts[$lang]['days']; ?></span>
+                                            <span><i class="fa fa-clock-o"></i> <?php echo $tour['duration']; ?> Days</span>
                                             <span><i class="fa fa-map-marker"></i> <?php echo htmlspecialchars($tour['destination']); ?></span>
                                         </div>
-                                        <p class="tour-description"><?php echo htmlspecialchars($tour['description_' . $lang]); ?></p>
+                                        <p class="tour-description"><?php echo htmlspecialchars($tour['description_en']); ?></p>
                                     </div>
                                     <div class="tour-card-footer">
                                         <div class="tour-price">
@@ -87,7 +59,7 @@ $tours_result = mysqli_query($con, $tours_query);
                                             <?php endif; ?>
                                         </div>
                                         <div class="tour-action">
-                                            <span><?php echo $tour_texts[$lang]['view_details']; ?></span>
+                                            <span>View Details</span>
                                             <i class="fa fa-arrow-right"></i>
                                         </div>
                                     </div>
@@ -101,12 +73,8 @@ $tours_result = mysqli_query($con, $tours_query);
                 <div class="col-12 text-center py-5">
                     <div class="no-tours-message">
                         <i class="fa fa-map-o fa-3x text-muted mb-3"></i>
-                        <h3 class="text-muted">
-                            <?php echo ($lang == 'si') ? 'දැනට සංචාර නොමැත' : 'No tours available at the moment'; ?>
-                        </h3>
-                        <p class="text-muted">
-                            <?php echo ($lang == 'si') ? 'කරුණාකර පසුව නැවත පරීක්ෂා කරන්න.' : 'Please check back later for new tours.'; ?>
-                        </p>
+                        <h3 class="text-muted">No tours available at the moment</h3>
+                        <p class="text-muted">Please check back later for new tours.</p>
                     </div>
                 </div>
             <?php endif; ?>

@@ -1,57 +1,8 @@
 <?php
-// If your app sets $_SESSION['site_language'] elsewhere, you can remove this check.
+// Session start for customer authentication check only
 if (session_status() === PHP_SESSION_NONE) {
     @session_start();
 }
-
-// Get current language (fallback to 'en')
-$lang = isset($_SESSION['site_language']) ? $_SESSION['site_language'] : 'en';
-
-// Multilingual content arrays
-$footer_texts = [
-    'en' => [
-        'information' => 'Information',
-        'quick_links' => 'Quick Links',
-        'additional' => 'Additional',
-        'phone' => '077 7138134',
-        'email' => 'info@edutourism.lk',
-        'address' => '2nd floor, Udeshi City, Kiribathgoda',
-        'terms' => 'Terms & Conditions',
-        'refunds' => 'Policy Refunds',
-        'home' => 'Home',
-        'past_tours' => 'Past Tours',
-        'downloads' => 'Downloads',
-        'about' => 'About Us',
-        'contact' => 'Contact Us',
-        'faqs' => 'FAQs',
-        'guidelines' => 'Guidelines',
-        // 'statistics' => 'Statistics View',
-        'copyright' => '© 2025 EduTourism. All rights reserved.',
-        'language' => 'Language:'
-    ],
-    'si' => [
-        'information' => 'තොරතුරු',
-        'quick_links' => 'ඉක්මන් සබැඳි',
-        'additional' => 'අමතර',
-        'phone' => '077 7138134',
-        'email' => 'info@edutourism.lk',
-        'address' => '2 වන මහල, උදේෂි සිටි, කිරිබත්ගොඩ',
-        'terms' => 'නියමයන් සහ කොන්දේසි',
-        'refunds' => 'ප්‍රතිපණ ප්‍රතිපත්තිය',
-        'home' => 'මුල් පිටුව',
-        'past_tours' => 'පසුගිය චාරිකා',
-        'downloads' => 'බාගැනීම්',
-        'about' => 'අප ගැන',
-        'contact' => 'අප වෙත',
-        'faqs' => 'නිති ප්‍රශ්න',
-        'guidelines' => 'මාර්ගෝපදේශ',
-        // 'statistics' => 'සංඛ්‍යාලේඛන දසුන',
-        'copyright' => '© 2025 EduTourism. සියලුම හිමිකම් ඇවිරිණි.',
-        'language' => 'භාෂාව:'
-    ]
-];
-
-$texts = $footer_texts[$lang];
 ?>
 <head>
   <link rel="stylesheet" href="css/footer.css">
@@ -75,57 +26,57 @@ $texts = $footer_texts[$lang];
         <div class="footer-content" aria-label="Footer navigation and contact">
             <!-- Information Section -->
             <div class="footer-widget info-widget">
-                <h5><?php echo $texts['information']; ?></h5>
+                <h5>Information</h5>
                 <ul>
                     <li>
-                        <a href="tel:<?php echo str_replace([' ', '/'], ['', ','], $texts['phone']); ?>" class="contact-link" aria-label="Call EduTourism">
-                            <?php echo $texts['phone']; ?>
+                        <a href="tel:0777138134" class="contact-link" aria-label="Call EduTourism">
+                            077 7138134
                         </a>
                     </li>
                     <li>
-                        <a href="mailto:<?php echo $texts['email']; ?>" class="contact-link" aria-label="Email EduTourism">
-                            <?php echo $texts['email']; ?>
+                        <a href="mailto:info@edutourism.lk" class="contact-link" aria-label="Email EduTourism">
+                            info@edutourism.lk
                         </a>
                     </li>
                     <li>
-                        <a href="https://maps.app.goo.gl/5LBALSyHDfszwLou5" target="_blank" rel="noopener" class="contact-link" aria-label="View address on Google Maps">
-                            <?php echo $texts['address']; ?>
+                        <a href="https://maps.app.goo.gl/FijmxgKuPWrJYAEn6" target="_blank" rel="noopener" class="contact-link" aria-label="View address on Google Maps">
+                            2nd floor, Udeshi City, Kiribathgoda
                         </a>
                     </li>
-                    <li><a href="terms.php"><?php echo $texts['terms']; ?></a></li>
-                    <li><a href="refunds.php"><?php echo $texts['refunds']; ?></a></li>
+                    <li><a href="terms.php">Terms & Conditions</a></li>
+                    <li><a href="refunds.php">Policy Refunds</a></li>
                 </ul>
             </div>
 
             <!-- Quick Links Section -->
             <div class="footer-widget">
-                <h5><?php echo $texts['quick_links']; ?></h5>
+                <h5>Quick Links</h5>
                 <ul>
-                    <li><a href="index.php"><?php echo $texts['home']; ?></a></li>
-                    <li><a href="pasttours.php"><?php echo $texts['past_tours']; ?></a></li>
+                    <li><a href="index.php">Home</a></li>
+                    <li><a href="pasttours.php">Past Tours</a></li>
                     <?php if (isset($_SESSION['customer_email']) && $_SESSION['customer_email'] != 'unset'): ?>
-                        <li><a href="downloads.php"><?php echo $texts['downloads']; ?></a></li>
+                        <li><a href="downloads.php">Downloads</a></li>
                     <?php endif; ?>
-                    <li><a href="aboutus.php"><?php echo $texts['about']; ?></a></li>
-                    <li><a href="contact.php"><?php echo $texts['contact']; ?></a></li>
-                    <li><a href="faqs.php"><?php echo $texts['faqs']; ?></a></li>
+                    <li><a href="aboutus.php">About Us</a></li>
+                    <li><a href="contact.php">Contact Us</a></li>
+                    <li><a href="faqs.php">FAQs</a></li>
                 </ul>
             </div>
 
             <!-- Additional Section -->
-            <div class="footer-widget">
-                <h5><?php echo $texts['additional']; ?></h5>
+            <!-- <div class="footer-widget">
+                <h5>Additional</h5>
                 <ul>
-                    <li><a href="guidelines/guidelinehub.php"><?php echo $texts['guidelines']; ?></a></li>
-                    <!-- <li><a href="statistics.php"><?php echo $texts['statistics']; ?></a></li> -->
+                    <li><a href="guidelines/guidelinehub.php">Guidelines</a></li>
+                    <li><a href="statistics.php">Statistics View</a></li>
                 </ul>
-            </div>
+            </div> -->
         </div>
 
         <!-- Social Media & Copyright -->
         <div class="footer-bottom">
             <div class="copyright">
-                <p><?php echo $texts['copyright']; ?></p>
+                <p>© 2025 EduTourism. All rights reserved.</p>
             </div>
 
             <div class="footer-social" aria-label="Social media links">
@@ -166,13 +117,7 @@ $texts = $footer_texts[$lang];
             </div>
 
 
-            <div class="language-switcher" aria-label="Language selector">
-                <span><?php echo $texts['language']; ?></span>
-                <select id="footer-language-select" onchange="changeLanguage(this.value)" aria-label="Choose language">
-                    <option value="en" <?php echo $lang == 'en' ? 'selected' : ''; ?>>English</option>
-                    <option value="si" <?php echo $lang == 'si' ? 'selected' : ''; ?>>සිංහල</option>
-                </select>
-            </div>
+            <!-- Language switcher removed - Google Translate is used in header -->
         </div>
     </div>
 </footer>
@@ -188,24 +133,6 @@ $texts = $footer_texts[$lang];
 <script src="js/main.js"></script>
 
 <script>
-// Unified language change function using URL API (safe & reliable)
-function changeLanguage(language) {
-    try {
-        const url = new URL(window.location.href);
-        url.searchParams.set('lang', language);
-        window.location.href = url.toString();
-    } catch (e) {
-        // Fallback for very old browsers
-        var query = window.location.search;
-        var hasLang = /([?&])lang=/.test(query);
-        if (hasLang) {
-            window.location.search = query.replace(/([?&])lang=[^&]*/,'$1lang=' + language);
-        } else {
-            window.location.search = (query ? query + '&' : '?') + 'lang=' + language;
-        }
-    }
-}
-
 // Set CSS safe-area variables for iOS notches
 document.addEventListener('DOMContentLoaded', function() {
     if (CSS.supports('padding: env(safe-area-inset-top)')) {

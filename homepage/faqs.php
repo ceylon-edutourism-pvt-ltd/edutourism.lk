@@ -2,11 +2,7 @@
 $active = "faqs";
 include('db.php');
 include("functions.php");
-include("language.php"); // Include language handling
 include("header.php");
-
-// Initialize and get current language
-// $lang = initializeLanguage();
 
 // Fetch active FAQs from database
 $faqs_sql = "SELECT * FROM faqs WHERE status = 'active' ORDER BY display_order ASC, created_at DESC";
@@ -21,23 +17,7 @@ $faqs_result = mysqli_query($con, $faqs_sql);
         <div class="row">
             <div class="col-lg-12">
                 <div class="faq-container">
-                    <?php
-                    // Multilingual page title
-                    $page_texts = [
-                        'en' => [
-                            'title' => 'Frequently Asked Questions',
-                            'no_faqs' => 'No FAQs available at the moment.',
-                            'contact_info' => 'Please contact us for any questions.'
-                        ],
-                        'si' => [
-                            'title' => 'නිතර අසන ප්‍රශ්න',
-                            'no_faqs' => 'දැනට FAQ නොමැත.',
-                            'contact_info' => 'ඕනෑම ප්‍රශ්නයක් සඳහා අප අමතන්න.'
-                        ]
-                    ];
-                    ?>
-
-                    <h1 class="faq-title"><?php echo $page_texts[$lang]['title']; ?></h1>
+                    <h1 class="faq-title">Frequently Asked Questions</h1>
 
                     <div class="faq-list">
                         <?php if (mysqli_num_rows($faqs_result) > 0): ?>
@@ -45,12 +25,12 @@ $faqs_result = mysqli_query($con, $faqs_sql);
                                 <div class='faq-item'>
                                     <div class='faq-header'>
                                         <span class='faq-question'>
-                                            <?php echo htmlspecialchars($faq['question_' . $lang]); ?>
+                                            <?php echo htmlspecialchars($faq['question_en']); ?>
                                         </span>
                                         <span class='faq-icon'>+</span>
                                     </div>
                                     <div class='faq-answer'>
-                                        <?php echo htmlspecialchars($faq['answer_' . $lang]); ?>
+                                        <?php echo htmlspecialchars($faq['answer_en']); ?>
                                     </div>
                                 </div>
                             <?php endwhile; ?>
@@ -58,8 +38,8 @@ $faqs_result = mysqli_query($con, $faqs_sql);
                             <!-- No FAQs available message -->
                             <div class="no-faqs-message text-center py-5">
                                 <i class="fa fa-question-circle-o fa-3x text-muted mb-3"></i>
-                                <h3 class="text-muted"><?php echo $page_texts[$lang]['no_faqs']; ?></h3>
-                                <p class="text-muted"><?php echo $page_texts[$lang]['contact_info']; ?></p>
+                                <h3 class="text-muted">No FAQs available at the moment.</h3>
+                                <p class="text-muted">Please contact us for any questions.</p>
                             </div>
                         <?php endif; ?>
                     </div>

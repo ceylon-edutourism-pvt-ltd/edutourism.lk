@@ -87,7 +87,7 @@
     align-items: center;
     justify-content: center;
     padding: 8px 16px;
-    background: linear-gradient(45deg, var(--contact-primary-color), #2a3b59);
+    background: #222;
     color: var(--contact-white);
     border-radius: 50px;
     text-decoration: none;
@@ -112,27 +112,27 @@
 /* Social Media Buttons Colors */
 
 .edu-contact-whatsapp .edu-contact-button {
-    background: linear-gradient(45deg, #25D366, #128C7E);
+    background: #222;
 }
 
 .edu-contact-facebook .edu-contact-button {
-    background: linear-gradient(45deg, #3b5998, #4267B2);
+    background: #222;
 }
 
 .edu-contact-instagram .edu-contact-button {
-    background: linear-gradient(45deg, #833AB4, #E1306C);
+    background: #222;
 }
 
 .edu-contact-tiktok .edu-contact-button {
-    background: linear-gradient(45deg, #000000, #EE1D52);
+    background: #222;
 }
 
 .edu-contact-youtube .edu-contact-button {
-    background: linear-gradient(45deg, #FF0000, #CC0000);
+    background: #222;
 }
 
 .edu-contact-linkedin .edu-contact-button {
-    background: linear-gradient(45deg, #0077B5, #0A66C2);
+    background: #222;
 }
 
 

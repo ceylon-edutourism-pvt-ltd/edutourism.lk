@@ -327,9 +327,18 @@
     }
 }
 
+/* Medium Tablet - Keep 2 columns */
 @media (max-width: 900px) {
     .footer-content {
         grid-template-columns: 1fr 1fr; /* 2 columns for medium tablets */
+    }
+    
+    .footer-widget h5 {
+        font-size: 17px;
+    }
+    
+    .footer-widget ul li a {
+        font-size: 14px;
     }
 }
 
@@ -343,54 +352,78 @@
         padding: 0 15px;
     }
 
+    /* Logo aligned to LEFT on mobile with reduced size */
     .footer-logo-section {
-        margin-bottom: 40px;
-        padding-bottom: 25px;
+        text-align: left; /* Changed from center to left */
+        margin-bottom: 35px;
+        padding-bottom: 20px;
+    }
+
+    .footer-logo {
+        display: block; /* Changed from inline-block */
     }
 
     .footer-logo img {
-        max-width: 180px;
+        max-width: 140px; /* Reduced from 180px for mobile */
+        display: block;
     }
 
+    /* TWO PARALLEL COLUMNS for Information and Quick Links on mobile */
     .footer-content {
-        grid-template-columns: 1fr;
-        gap: 35px;
-        margin-bottom: 40px;
-        text-align: center;
+        grid-template-columns: 1fr 1fr; /* Changed from 1fr to 1fr 1fr */
+        gap: 20px 15px; /* Reduced gap for compact layout */
+        margin-bottom: 35px;
+        text-align: left; /* Changed from center to left */
+        align-items: start; /* Align columns to top */
+    }
+
+    .footer-widget {
+        min-width: 0; /* Prevent overflow */
+        overflow-wrap: break-word; /* Break long words if needed */
     }
 
     .footer-widget h5 {
-        font-size: 17px;
-        margin-bottom: 20px;
-        text-align: center;
+        font-size: 16px; /* Slightly reduced */
+        margin-bottom: 18px;
+        text-align: left; /* Changed from center to left */
+        letter-spacing: 0.8px;
     }
 
     .footer-widget h5::after {
-        left: 50%;
-        transform: translateX(-50%);
-        width: 40px;
+        left: 0; /* Changed from 50% centered to left aligned */
+        transform: none; /* Removed translateX */
+        width: 35px;
     }
 
     .footer-widget ul {
-        text-align: center;
+        text-align: left; /* Changed from center to left */
     }
 
     .footer-widget ul li {
-        margin-bottom: 12px;
+        margin-bottom: 10px; /* Reduced for compact layout */
     }
 
     .footer-widget ul li a {
-        font-size: 14px;
-        padding-left: 0;
+        font-size: 13px; /* Slightly reduced for mobile */
+        padding-left: 18px; /* Added back padding for icon space */
         display: inline-block;
+        word-wrap: break-word;
+        max-width: 100%;
     }
 
+    /* Show icons again on mobile for better UX */
     .footer-widget ul li a::before {
-        display: none;
+        display: inline; /* Changed from none to show icons */
+        font-size: 11px;
+        margin-right: 2px;
     }
 
     .info-widget ul li a {
-        padding-left: 0;
+        padding-left: 20px; /* Restore padding for info widget */
+    }
+
+    .info-widget ul li a::before {
+        left: 0;
     }
 
     .footer-bottom {
@@ -444,40 +477,55 @@
         padding: 0 10px;
     }
 
+    /* Logo stays LEFT aligned on small mobile */
     .footer-logo-section {
-        margin-bottom: 30px;
-        padding-bottom: 20px;
+        text-align: left;
+        margin-bottom: 25px;
+        padding-bottom: 15px;
     }
 
     .footer-logo img {
-        max-width: 150px;
+        max-width: 120px; /* Further reduced for small screens */
     }
 
+    /* Keep TWO COLUMNS on small mobile with tighter spacing */
     .footer-content {
-        gap: 30px;
-        margin-bottom: 10px;
+        grid-template-columns: 1fr 1fr;
+        gap: 15px 12px; /* Tighter gap for small screens */
+        margin-bottom: 25px;
     }
 
     .footer-widget h5 {
-        font-size: 16px;
-        margin-bottom: 18px;
+        font-size: 14px; /* Reduced for small screens */
+        margin-bottom: 15px;
+        letter-spacing: 0.6px;
     }
 
     .footer-widget h5::after {
-        width: 35px;
+        width: 30px;
+        height: 2px;
     }
 
     .footer-widget ul li {
-        margin-bottom: 10px;
+        margin-bottom: 8px; /* Tighter spacing */
     }
 
     .footer-widget ul li a {
-        font-size: 13px;
+        font-size: 12px; /* Reduced font */
         line-height: 1.5;
+        padding-left: 16px;
+    }
+
+    .footer-widget ul li a::before {
+        font-size: 10px;
     }
 
     .info-widget ul li {
-        margin-bottom: 12px;
+        margin-bottom: 9px;
+    }
+
+    .info-widget ul li a {
+        padding-left: 18px;
     }
 
     .footer-social {
@@ -512,12 +560,45 @@
         padding: 0 8px;
     }
 
+    /* Logo LEFT aligned even on very small screens */
+    .footer-logo-section {
+        text-align: left;
+    }
+
+    .footer-logo img {
+        max-width: 100px; /* Extra small for very small screens */
+    }
+
+    /* Maintain TWO COLUMNS even on smallest screens */
+    .footer-content {
+        grid-template-columns: 1fr 1fr;
+        gap: 12px 10px; /* Very tight spacing */
+    }
+
     .footer-widget h5 {
-        font-size: 15px;
+        font-size: 13px;
+        margin-bottom: 12px;
+    }
+
+    .footer-widget h5::after {
+        width: 25px;
+    }
+
+    .footer-widget ul li {
+        margin-bottom: 7px;
     }
 
     .footer-widget ul li a {
-        font-size: 12px;
+        font-size: 11px;
+        padding-left: 14px;
+    }
+
+    .footer-widget ul li a::before {
+        font-size: 9px;
+    }
+
+    .info-widget ul li a {
+        padding-left: 16px;
     }
 
     .footer-social a {

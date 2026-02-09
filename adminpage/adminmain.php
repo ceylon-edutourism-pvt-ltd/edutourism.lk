@@ -77,6 +77,7 @@ function has_role(string ...$required): bool {
 function can_vms(): bool { return has_role('SUPER_ADMIN', 'VMS_ADMIN'); }
 function can_ems(): bool { return has_role('SUPER_ADMIN', 'EMS_ADMIN'); }
 function can_tms(): bool { return has_role('SUPER_ADMIN', 'TMS_ADMIN'); }
+function can_hms(): bool { return has_role('SUPER_ADMIN', 'HMS_ADMIN'); }
 
 // Login attempt tracking
 if (!isset($_SESSION['login_attempts'])) $_SESSION['login_attempts'] = 0;
@@ -284,16 +285,16 @@ function render_dashboard(): void {
                 </div>
 
                 <div class="card">
-                    <div class="title">EMS</div>
-                    <div class="desc">Employee Management System</div>
-                    <?php if (can_ems()): ?>
-                        <a class="btn" href="adminemployee.php">Open EMS</a>
+                    <div class="title">HMS</div>
+                    <div class="desc">Hero Management System</div>
+                    <?php if (can_hms()): ?>
+                        <a class="btn" href="adminhero.php">Open HMS</a>
                     <?php else: ?>
                         <span class="btn disabled">No access</span>
                     <?php endif; ?>
                 </div>
 
-                <div class="card">
+                <!-- <div class="card">
                     <div class="title">TMS</div>
                     <div class="desc">Task Management System</div>
                     <?php if (can_tms()): ?>
@@ -301,13 +302,13 @@ function render_dashboard(): void {
                     <?php else: ?>
                         <span class="btn disabled">No access</span>
                     <?php endif; ?>
-                </div>
+                </div> -->
             </div>
 
             <div class="grid">
                 <div class="card">
-                    <div class="title">PMS</div>
-                    <div class="desc">Post Management System</div>
+                    <div class="title">CMS</div>
+                    <div class="desc">Card Management System</div>
                     <?php if (can_tms()): ?>
                         <a class="btn" href="adminpost.php">Open PMS</a>
                     <?php else: ?>
@@ -315,7 +316,7 @@ function render_dashboard(): void {
                     <?php endif; ?>
                 </div>
 
-                <div class="card">
+                <!-- <div class="card">
                     <div class="title">FMS</div>
                     <div class="desc">File Management System</div>
                     <?php if (can_vms()): ?>
@@ -323,7 +324,7 @@ function render_dashboard(): void {
                     <?php else: ?>
                         <span class="btn disabled">No access</span>
                     <?php endif; ?>
-                </div>
+                </div> -->
 
                 <div class="card">
                     <div class="title">RMS</div>
@@ -357,11 +358,20 @@ function render_dashboard(): void {
                     <?php endif; ?>
                 </div> -->
 
-                <div class="card">
+                <!-- <div class="card">
                     <div class="title">Report Center</div>
                     <div class="desc">All Report Generations</div>
                     <?php if (can_tms()): ?>
                         <a class="btn" href="reportcenter.php">Open Report Center</a>
+                    <?php else: ?>
+                        <span class="btn disabled">No access</span>
+                    <?php endif; ?>
+                </div> -->
+                <div class="card">
+                    <div class="title">EMS</div>
+                    <div class="desc">Employee Management System</div>
+                    <?php if (can_ems()): ?>
+                        <a class="btn" href="adminemployee.php">Open EMS</a>
                     <?php else: ?>
                         <span class="btn disabled">No access</span>
                     <?php endif; ?>

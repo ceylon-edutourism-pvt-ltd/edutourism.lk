@@ -1,0 +1,773 @@
+/* ========================================
+   EDUTOURISM HERO SECTION - ENHANCED STYLES
+   ======================================== */
+
+:root {
+    --edutourism-hero-primary-color: #1a2b49;
+    --edutourism-hero-secondary-color: #ff7e00;
+    --edutourism-hero-text-color: #333333;
+    --edutourism-hero-white: #ffffff;
+    --edutourism-hero-shadow-light: 0 4px 20px rgba(0, 0, 0, 0.08);
+    --edutourism-hero-shadow-medium: 0 8px 30px rgba(0, 0, 0, 0.12);
+    --edutourism-hero-shadow-heavy: 0 15px 50px rgba(0, 0, 0, 0.2);
+    --edutourism-hero-media-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
+    --edutourism-hero-transition: all 0.3s ease;
+    --edutourism-hero-transition-smooth: all 0.5s cubic-bezier(0.25, 0.8, 0.25, 1);
+}
+
+/* ========================================
+   RESET & BASE STYLES
+   ======================================== */
+
+* {
+    box-sizing: border-box;
+}
+
+body {
+    margin: 0;
+    padding: 0;
+    font-family: 'Poppins', 'Muli', sans-serif;
+}
+
+/* ========================================
+   MAIN SLIDER WRAPPER
+   ======================================== */
+
+.edutourism-hero-slider-main-wrapper {
+    position: relative !important;
+    width: 100%;
+    height: 100vh;
+    min-height: 500px;
+    max-height: 900px;
+    overflow: hidden;
+    background-color: #000;
+}
+
+/* ========================================
+   INDIVIDUAL SLIDE ITEMS
+   ======================================== */
+
+.edutourism-hero-slide-item {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    opacity: 0;
+    visibility: hidden;
+    transition: opacity 1s cubic-bezier(0.4, 0, 0.2, 1), 
+                visibility 1s cubic-bezier(0.4, 0, 0.2, 1),
+                transform 1s cubic-bezier(0.4, 0, 0.2, 1);
+    transform: scale(1.05);
+    z-index: 1;
+}
+
+.edutourism-hero-slide-item.edutourism-slide-active {
+    opacity: 1;
+    visibility: visible;
+    transform: scale(1);
+    z-index: 2;
+    animation: edutourismSlideIn 1s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+@keyframes edutourismSlideIn {
+    from {
+        opacity: 0;
+        transform: scale(1.05);
+    }
+    to {
+        opacity: 1;
+        transform: scale(1);
+    }
+}
+
+/* ========================================
+   TYPE 1: LEFT TEXT + RIGHT MEDIA
+   ======================================== */
+
+.edutourism-hero-container-type-1 {
+    position: relative;
+    width: 100%;
+    height: 100%;
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    background-size: cover;
+    background-position: center;
+    background-repeat: no-repeat;
+    background-color: #000;
+}
+
+.edutourism-hero-container-type-1 .edutourism-hero-bg-overlay {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    z-index: 1;
+}
+
+.edutourism-hero-container-type-1 .edutourism-hero-content-wrapper {
+    position: relative;
+    flex: 0 0 50%;
+    max-width: 50%;
+    height: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 60px;
+    z-index: 2;
+    background-size: cover;
+    background-position: center;
+    background-repeat: no-repeat;
+}
+
+.edutourism-hero-container-type-1 .edutourism-hero-content-wrapper.edutourism-has-text-background {
+    position: relative;
+}
+
+.edutourism-hero-container-type-1 .edutourism-hero-text-overlay {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    z-index: 1;
+}
+
+.edutourism-hero-container-type-1 .edutourism-hero-content-inner {
+    position: relative;
+    z-index: 2;
+    max-width: 600px;
+}
+
+.edutourism-hero-container-type-1 .edutourism-hero-media-wrapper {
+    position: relative;
+    flex: 0 0 50%;
+    max-width: 50%;
+    height: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 40px;
+    z-index: 2;
+}
+
+.edutourism-hero-container-type-1 .edutourism-hero-media-box {
+    position: relative;
+    width: 100%;
+    max-width: 600px;
+    height: auto;
+    max-height: 70%;
+    border-radius: 12px;
+    overflow: hidden;
+    box-shadow: var(--edutourism-hero-media-shadow);
+    background-color: #000;
+}
+
+.edutourism-hero-container-type-1 .edutourism-hero-video,
+.edutourism-hero-container-type-1 .edutourism-hero-image {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    display: block;
+}
+
+/* ========================================
+   TYPE 2: CENTER IMAGE + CENTER TEXT
+   ======================================== */
+
+.edutourism-hero-container-type-2 {
+    position: relative;
+    width: 100%;
+    height: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background-size: cover;
+    background-position: center;
+    background-repeat: no-repeat;
+    background-color: #000;
+}
+
+.edutourism-hero-container-type-2 .edutourism-hero-center-overlay {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    z-index: 1;
+}
+
+.edutourism-hero-container-type-2 .edutourism-hero-content-center {
+    position: relative;
+    z-index: 2;
+    text-align: center;
+    max-width: 800px;
+    padding: 40px;
+}
+
+/* ========================================
+   TYPE 3: LEFT MEDIA + RIGHT TEXT
+   ======================================== */
+
+.edutourism-hero-container-type-3 {
+    position: relative;
+    width: 100%;
+    height: 100%;
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    background-size: cover;
+    background-position: center;
+    background-repeat: no-repeat;
+    background-color: #000;
+}
+
+.edutourism-hero-container-type-3 .edutourism-hero-bg-overlay {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    z-index: 1;
+}
+
+.edutourism-hero-container-type-3 .edutourism-hero-media-wrapper {
+    position: relative;
+    flex: 0 0 50%;
+    max-width: 50%;
+    height: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 40px;
+    z-index: 2;
+}
+
+.edutourism-hero-container-type-3 .edutourism-hero-media-box {
+    position: relative;
+    width: 100%;
+    max-width: 600px;
+    height: auto;
+    max-height: 70%;
+    border-radius: 12px;
+    overflow: hidden;
+    box-shadow: var(--edutourism-hero-media-shadow);
+    background-color: #000;
+}
+
+.edutourism-hero-container-type-3 .edutourism-hero-video,
+.edutourism-hero-container-type-3 .edutourism-hero-image {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    display: block;
+}
+
+.edutourism-hero-container-type-3 .edutourism-hero-content-wrapper {
+    position: relative;
+    flex: 0 0 50%;
+    max-width: 50%;
+    height: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 60px;
+    z-index: 2;
+    background-size: cover;
+    background-position: center;
+    background-repeat: no-repeat;
+}
+
+.edutourism-hero-container-type-3 .edutourism-hero-content-wrapper.edutourism-has-text-background {
+    position: relative;
+}
+
+.edutourism-hero-container-type-3 .edutourism-hero-text-overlay {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    z-index: 1;
+}
+
+.edutourism-hero-container-type-3 .edutourism-hero-content-inner {
+    position: relative;
+    z-index: 2;
+    max-width: 600px;
+}
+
+/* ========================================
+   TYPOGRAPHY
+   ======================================== */
+
+.edutourism-hero-title {
+    font-size: 48px;
+    font-weight: 700;
+    line-height: 1.2;
+    margin: 0 0 20px 0;
+    color: var(--edutourism-hero-white);
+    text-shadow: 2px 2px 8px rgba(0, 0, 0, 0.3);
+}
+
+.edutourism-hero-description {
+    font-size: 18px;
+    font-weight: 400;
+    line-height: 1.6;
+    margin: 0 0 30px 0;
+    color: var(--edutourism-hero-white);
+    text-shadow: 1px 1px 4px rgba(0, 0, 0, 0.3);
+}
+
+/* ========================================
+   BUTTONS
+   ======================================== */
+
+.edutourism-hero-buttons-wrapper {
+    display: flex;
+    gap: 15px;
+    flex-wrap: wrap;
+}
+
+.edutourism-hero-btn {
+    display: inline-block;
+    padding: 14px 32px;
+    font-size: 16px;
+    font-weight: 600;
+    text-decoration: none;
+    border-radius: 8px;
+    transition: var(--edutourism-hero-transition);
+    cursor: pointer;
+    border: none;
+    text-align: center;
+}
+
+.edutourism-hero-btn-primary {
+    background-color: var(--edutourism-hero-secondary-color);
+    color: var(--edutourism-hero-white);
+    box-shadow: 0 4px 15px rgba(255, 126, 0, 0.3);
+}
+
+.edutourism-hero-btn-primary:hover {
+    background-color: #ff9a3d;
+    box-shadow: 0 6px 20px rgba(255, 126, 0, 0.4);
+    transform: translateY(-2px);
+}
+
+.edutourism-hero-btn-secondary {
+    background-color: transparent;
+    color: var(--edutourism-hero-white);
+    border: 2px solid var(--edutourism-hero-white);
+}
+
+.edutourism-hero-btn-secondary:hover {
+    background-color: var(--edutourism-hero-white);
+    color: var(--edutourism-hero-primary-color);
+    transform: translateY(-2px);
+}
+
+/* ========================================
+   SLIDER CONTROLS
+   ======================================== */
+
+.edutourism-slider-control {
+    position: absolute;
+    top: 50%;
+    transform: translateY(-50%);
+    width: 50px;
+    height: 50px;
+    background-color: rgba(255, 255, 255, 0.9);
+    border: none;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    z-index: 10;
+    transition: all 0.3s cubic-bezier(0.25, 0.8, 0.25, 1);
+    box-shadow: var(--edutourism-hero-shadow-medium);
+}
+
+.edutourism-slider-control:hover {
+    background-color: var(--edutourism-hero-secondary-color);
+    box-shadow: var(--edutourism-hero-shadow-heavy);
+    transform: translateY(-50%) scale(1.15);
+}
+
+.edutourism-slider-control:active {
+    transform: translateY(-50%) scale(1.05);
+}
+
+.edutourism-slider-control svg {
+    color: var(--edutourism-hero-primary-color);
+    transition: color 0.3s ease;
+}
+
+.edutourism-slider-control:hover svg {
+    color: var(--edutourism-hero-white);
+}
+
+.edutourism-slider-btn-prev {
+    left: 30px;
+}
+
+.edutourism-slider-btn-next {
+    right: 30px;
+}
+
+/* ========================================
+   SLIDER DOTS
+   ======================================== */
+
+.edutourism-slider-dots-wrapper {
+    position: absolute;
+    bottom: 30px;
+    left: 50%;
+    transform: translateX(-50%);
+    display: flex;
+    gap: 12px;
+    z-index: 10;
+}
+
+.edutourism-slider-dot {
+    width: 12px;
+    height: 12px;
+    border-radius: 50%;
+    background-color: rgba(255, 255, 255, 0.5);
+    border: none;
+    cursor: pointer;
+    transition: all 0.3s cubic-bezier(0.25, 0.8, 0.25, 1);
+    padding: 0;
+}
+
+.edutourism-slider-dot:hover {
+    background-color: rgba(255, 255, 255, 0.8);
+    transform: scale(1.2);
+}
+
+.edutourism-slider-dot.edutourism-dot-active {
+    background-color: var(--edutourism-hero-secondary-color);
+    width: 30px;
+    border-radius: 6px;
+    box-shadow: 0 2px 8px rgba(255, 126, 0, 0.4);
+}
+
+/* ========================================
+   TABLET RESPONSIVE (768px - 991px)
+   ======================================== */
+
+@media (max-width: 991px) {
+    .edutourism-hero-slider-main-wrapper {
+        height: 85vh;
+        min-height: 450px;
+        max-height: 700px;
+    }
+
+    /* TYPE 1 - Tablet */
+    .edutourism-hero-container-type-1 .edutourism-hero-content-wrapper {
+        padding: 40px;
+    }
+
+    .edutourism-hero-container-type-1 .edutourism-hero-media-wrapper {
+        padding: 30px;
+    }
+
+    .edutourism-hero-container-type-1 .edutourism-hero-media-box {
+        max-width: 500px;
+        max-height: 65%;
+    }
+
+    /* TYPE 3 - Tablet */
+    .edutourism-hero-container-type-3 .edutourism-hero-content-wrapper {
+        padding: 40px;
+    }
+
+    .edutourism-hero-container-type-3 .edutourism-hero-media-wrapper {
+        padding: 30px;
+    }
+
+    .edutourism-hero-container-type-3 .edutourism-hero-media-box {
+        max-width: 500px;
+        max-height: 65%;
+    }
+
+    /* Typography - Tablet */
+    .edutourism-hero-title {
+        font-size: 38px;
+        margin-bottom: 16px;
+    }
+
+    .edutourism-hero-description {
+        font-size: 16px;
+        margin-bottom: 25px;
+    }
+
+    /* Buttons - Tablet */
+    .edutourism-hero-btn {
+        padding: 12px 28px;
+        font-size: 15px;
+    }
+
+    /* Controls - Tablet */
+    .edutourism-slider-control {
+        width: 45px;
+        height: 45px;
+    }
+
+    .edutourism-slider-btn-prev {
+        left: 20px;
+    }
+
+    .edutourism-slider-btn-next {
+        right: 20px;
+    }
+
+    .edutourism-slider-dots-wrapper {
+        bottom: 25px;
+    }
+}
+
+/* ========================================
+   MOBILE RESPONSIVE (max-width: 767px)
+   ======================================== */
+
+@media (max-width: 767px) {
+    .edutourism-hero-slider-main-wrapper {
+        height: auto;
+        min-height: 600px;
+        max-height: none;
+    }
+
+    /* TYPE 1 - Mobile: Stack vertically */
+    .edutourism-hero-container-type-1 {
+        flex-direction: column;
+    }
+
+    .edutourism-hero-container-type-1 .edutourism-hero-content-wrapper {
+        flex: 0 0 auto;
+        max-width: 100%;
+        min-height: 300px;
+        padding: 40px 25px;
+    }
+
+    .edutourism-hero-container-type-1 .edutourism-hero-content-inner {
+        max-width: 100%;
+    }
+
+    .edutourism-hero-container-type-1 .edutourism-hero-media-wrapper {
+        flex: 0 0 auto;
+        max-width: 100%;
+        min-height: 300px;
+        padding: 25px;
+    }
+
+    .edutourism-hero-container-type-1 .edutourism-hero-media-box {
+        max-width: 100%;
+        max-height: 350px;
+        height: 300px;
+    }
+
+    /* TYPE 2 - Mobile */
+    .edutourism-hero-container-type-2 .edutourism-hero-content-center {
+        padding: 30px 25px;
+    }
+
+    /* TYPE 3 - Mobile: Stack vertically, media first */
+    .edutourism-hero-container-type-3 {
+        flex-direction: column;
+    }
+
+    .edutourism-hero-container-type-3 .edutourism-hero-media-wrapper {
+        flex: 0 0 auto;
+        max-width: 100%;
+        min-height: 300px;
+        padding: 25px;
+        order: 1;
+    }
+
+    .edutourism-hero-container-type-3 .edutourism-hero-media-box {
+        max-width: 100%;
+        max-height: 350px;
+        height: 300px;
+    }
+
+    .edutourism-hero-container-type-3 .edutourism-hero-content-wrapper {
+        flex: 0 0 auto;
+        max-width: 100%;
+        min-height: 300px;
+        padding: 40px 25px;
+        order: 2;
+    }
+
+    .edutourism-hero-container-type-3 .edutourism-hero-content-inner {
+        max-width: 100%;
+    }
+
+    /* Typography - Mobile */
+    .edutourism-hero-title {
+        font-size: 32px;
+        margin-bottom: 14px;
+    }
+
+    .edutourism-hero-description {
+        font-size: 15px;
+        margin-bottom: 20px;
+    }
+
+    /* Buttons - Mobile */
+    .edutourism-hero-buttons-wrapper {
+        gap: 12px;
+    }
+
+    .edutourism-hero-btn {
+        padding: 11px 24px;
+        font-size: 14px;
+    }
+
+    /* Controls - Mobile */
+    .edutourism-slider-control {
+        width: 40px;
+        height: 40px;
+    }
+
+    .edutourism-slider-btn-prev {
+        left: 15px;
+    }
+
+    .edutourism-slider-btn-next {
+        right: 15px;
+    }
+
+    .edutourism-slider-dots-wrapper {
+        bottom: 20px;
+        gap: 10px;
+    }
+
+    .edutourism-slider-dot {
+        width: 10px;
+        height: 10px;
+    }
+
+    .edutourism-slider-dot.edutourism-dot-active {
+        width: 25px;
+    }
+}
+
+/* ========================================
+   SMALL MOBILE (max-width: 480px)
+   ======================================== */
+
+@media (max-width: 480px) {
+    .edutourism-hero-slider-main-wrapper {
+        min-height: 550px;
+    }
+
+    /* TYPE 1 - Small Mobile */
+    .edutourism-hero-container-type-1 .edutourism-hero-content-wrapper {
+        padding: 30px 20px;
+        min-height: 280px;
+    }
+
+    .edutourism-hero-container-type-1 .edutourism-hero-media-wrapper {
+        padding: 20px;
+        min-height: 270px;
+    }
+
+    .edutourism-hero-container-type-1 .edutourism-hero-media-box {
+        max-height: 300px;
+        height: 250px;
+    }
+
+    /* TYPE 2 - Small Mobile */
+    .edutourism-hero-container-type-2 .edutourism-hero-content-center {
+        padding: 25px 20px;
+    }
+
+    /* TYPE 3 - Small Mobile */
+    .edutourism-hero-container-type-3 .edutourism-hero-content-wrapper {
+        padding: 30px 20px;
+        min-height: 280px;
+    }
+
+    .edutourism-hero-container-type-3 .edutourism-hero-media-wrapper {
+        padding: 20px;
+        min-height: 270px;
+    }
+
+    .edutourism-hero-container-type-3 .edutourism-hero-media-box {
+        max-height: 300px;
+        height: 250px;
+    }
+
+    /* Typography - Small Mobile */
+    .edutourism-hero-title {
+        font-size: 26px;
+        margin-bottom: 12px;
+    }
+
+    .edutourism-hero-description {
+        font-size: 14px;
+        margin-bottom: 18px;
+    }
+
+    /* Buttons - Small Mobile */
+    .edutourism-hero-btn {
+        padding: 10px 20px;
+        font-size: 13px;
+    }
+
+    /* Controls - Small Mobile */
+    .edutourism-slider-control {
+        width: 36px;
+        height: 36px;
+    }
+
+    .edutourism-slider-control svg {
+        width: 18px;
+        height: 18px;
+    }
+
+    .edutourism-slider-btn-prev {
+        left: 10px;
+    }
+
+    .edutourism-slider-btn-next {
+        right: 10px;
+    }
+
+    .edutourism-slider-dots-wrapper {
+        bottom: 15px;
+        gap: 8px;
+    }
+
+    .edutourism-slider-dot {
+        width: 8px;
+        height: 8px;
+    }
+
+    .edutourism-slider-dot.edutourism-dot-active {
+        width: 20px;
+    }
+}
+
+/* ========================================
+   ACCESSIBILITY
+   ======================================== */
+
+.edutourism-slider-control:focus,
+.edutourism-slider-dot:focus {
+    outline: 3px solid var(--edutourism-hero-secondary-color);
+    outline-offset: 2px;
+}
+
+/* Reduce motion for accessibility */
+@media (prefers-reduced-motion: reduce) {
+    .edutourism-hero-slide-item,
+    .edutourism-slider-control,
+    .edutourism-slider-dot,
+    .edutourism-hero-btn {
+        transition: none;
+    }
+}
