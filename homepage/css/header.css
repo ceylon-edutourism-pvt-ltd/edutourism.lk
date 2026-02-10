@@ -112,23 +112,35 @@ body {
     padding: 12px 20px;
     height: auto;
     font-weight: 500;
-    transition: all 0.4s cubic-bezier(0.25, 0.8, 0.25, 1);
+    transition: all 0.3s ease;
     text-decoration: none !important;
     white-space: nowrap;
     position: relative;
-    border-radius: 8px;
-    overflow: hidden;
-    z-index: 1;
+    border-radius: 0;
+    overflow: visible;
 }
 
-/* Text wrapper for scaling effect */
+.edutourism-nav-link::after {
+    content: '';
+    position: absolute;
+    bottom: 8px;
+    left: 20px;
+    width: 30px;
+    height: 3px;
+    background-color: var(--edutourism-secondary-color);
+    transform: scaleX(0);
+    transform-origin: left;
+    transition: transform 0.3s ease;
+}
+
+/* Text wrapper for scaling effect
 .edutourism-nav-text {
     position: relative;
     z-index: 2;
     transition: transform 0.4s cubic-bezier(0.25, 0.8, 0.25, 1);
 }
 
-/* Liquid background effect */
+/* Liquid background effect
 .edutourism-nav-liquid {
     position: absolute;
     top: 50%;
@@ -143,37 +155,38 @@ body {
                 border-radius 0.5s cubic-bezier(0.25, 0.8, 0.25, 1);
     z-index: 1;
     opacity: 0;
+} */
+
+.edutourism-nav-link:hover,
+.edutourism-nav-link:focus {
+    color: var(--edutourism-secondary-color);
+    background: transparent;
+    box-shadow: none;
 }
 
-/* Hover Effects - Scale and Liquid Animation */
-.edutourism-nav-link:hover .edutourism-nav-text,
-.edutourism-nav-link:focus .edutourism-nav-text {
-    transform: scale(1.1);
-}
-
-.edutourism-nav-link:hover .edutourism-nav-liquid,
-.edutourism-nav-link:focus .edutourism-nav-liquid {
-    width: 200%;
-    height: 300%;
-    border-radius: 40%;
-    opacity: 1;
+.edutourism-nav-link:hover::after,
+.edutourism-nav-link:focus::after {
+    transform: scaleX(1);
 }
 
 /* Active state */
 .edutourism-nav-item-active .edutourism-nav-link {
-    background: var(--edutourism-liquid-gradient);
-    box-shadow: 0 4px 15px rgba(255, 126, 0, 0.3);
+    color: var(--edutourism-white);
+    background: transparent;
+    box-shadow: none;
 }
 
-.edutourism-nav-item-active .edutourism-nav-link .edutourism-nav-text {
-    transform: scale(1.05);
+.edutourism-nav-item-active .edutourism-nav-link::after {
+    transform: scaleX(1);
 }
 
-/* Subtle glow effect on hover */
+/* Subtle glow effect on hover
 .edutourism-nav-link:hover,
 .edutourism-nav-link:focus {
     box-shadow: 0 4px 20px rgba(255, 126, 0, 0.4);
-}
+    background: var(--edutourism-liquid-gradient);
+    
+} */
 
 /* Language Section */
 .edutourism-lang-section {

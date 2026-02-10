@@ -125,9 +125,6 @@ if (!$result) {
                 <i class="fa fa-calendar-times-o fa-4x"></i>
                 <h3>No Past Tours Available</h3>
                 <p>Check back later to see our completed educational journeys.</p>
-                <a href="index.php" class="btn-primary">
-                    <i class="fa fa-home"></i> Back to Home
-                </a>
             </div>
             
         <?php endif; ?>

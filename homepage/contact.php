@@ -72,8 +72,7 @@ include("header.php");
                     </div>
                     
                     <div class="edu-contact-map">
-                        <iframe src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3960.271729174325!2d79.9266075099594!3d6.977231617696542!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x3ae257c1737d6de5%3A0xa329403f5a6cf7e6!2sEduTourism%20Pvt%20Ltd!5e0!3m2!1sen!2slk!4v1746771913343!5m2!1sen!2slk" 
-                                width="100%" height="250" style="border:0;" allowfullscreen="" loading="lazy"></iframe>
+                        <iframe src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3960.2717291740805!2d79.92661287448315!3d6.977231617725457!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x3ae257c1737d6de5%3A0xa329403f5a6cf7e6!2sCeylon%20Edutourism%20Pvt%20Ltd!5e0!3m2!1sen!2slk!4v1770697589802!5m2!1sen!2slk" width="600" height="450" style="border:0;" allowfullscreen="" loading="lazy" referrerpolicy="no-referrer-when-downgrade"></iframe>
                     </div>
                 </div>
             </div>

@@ -53,13 +53,13 @@ if (session_status() === PHP_SESSION_NONE) {
                 <h5>Quick Links</h5>
                 <ul>
                     <li><a href="index.php">Home</a></li>
-                    <li><a href="pasttours.php">Past Tours</a></li>
+                    <li><a href="pasttours.php">Success Tours</a></li>
                     <?php if (isset($_SESSION['customer_email']) && $_SESSION['customer_email'] != 'unset'): ?>
                         <li><a href="downloads.php">Downloads</a></li>
                     <?php endif; ?>
-                    <li><a href="aboutus.php">About Us</a></li>
-                    <li><a href="contact.php">Contact Us</a></li>
-                    <li><a href="faqs.php">FAQs</a></li>
+                    <li><a href="aboutus.php">About</a></li>
+                    <li><a href="contact.php">Contact</a></li>
+                    <li><a href="faqs.php">FAQ</a></li>
                 </ul>
             </div>
 

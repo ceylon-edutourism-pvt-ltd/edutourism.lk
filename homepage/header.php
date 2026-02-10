@@ -79,11 +79,11 @@
                                 // Navigation menu items
                                 $menu_items = [
                                     'Home' => ['url' => 'index.php', 'key' => 'home'],
-                                    'Past Tours' => ['url' => 'pasttours.php', 'key' => 'pasttours'],
+                                    'Success Tours' => ['url' => 'pasttours.php', 'key' => 'pasttours'],
                                     'Testimonials' => ['url' => 'testimonials.php', 'key' => 'testimonials'],
-                                    'About Us' => ['url' => 'aboutus.php', 'key' => 'aboutus'],
-                                    'Contact Us' => ['url' => 'contact.php', 'key' => 'contact'],
-                                    'FAQs' => ['url' => 'faqs.php', 'key' => 'faqs']
+                                    'About' => ['url' => 'aboutus.php', 'key' => 'aboutus'],
+                                    'Contact' => ['url' => 'contact.php', 'key' => 'contact'],
+                                    'FAQ' => ['url' => 'faqs.php', 'key' => 'faqs']
                                 ];
 
                                 // Generate menu items
