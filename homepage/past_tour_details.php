@@ -91,13 +91,7 @@ if ($hero_media && !empty($hero_media['media_url']) && file_exists($hero_media['
 <section class="tour-hero" style="background-image: url('<?php echo htmlspecialchars($hero_image_url); ?>');">
     <div class="hero-overlay">
         <div class="hero-content">
-            <div class="breadcrumb-nav">
-                <a href="index.php"><i class="fa fa-home"></i> Home</a>
-                <span>/</span>
-                <a href="pasttours.php">Past Tours</a>
-                <span>/</span>
-                <span><?php echo htmlspecialchars($tour['title']); ?></span>
-            </div>
+            
             
             <h1 class="tour-hero-title"><?php echo htmlspecialchars($tour['title']); ?></h1>
             

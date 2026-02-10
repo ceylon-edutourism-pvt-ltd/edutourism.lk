@@ -35,20 +35,7 @@ if (!$result) {
     <link rel="stylesheet" href="css/tourcard.css">
 </head>
 
-<!-- Page Header Section -->
-<section class="past-tours-header">
-    <div class="header-overlay">
-        <div class="header-content">
-            <h1>Our Past Tours</h1>
-            <p>Relive the memories and experiences from our previous educational journeys</p>
-            <div class="breadcrumb">
-                <a href="index.php"><i class="fa fa-home"></i> Home</a>
-                <span>/</span>
-                <span>Past Tours</span>
-            </div>
-        </div>
-    </div>
-</section>
+
 
 <!-- Past Tours Grid Section -->
 <section class="past-tours-section">
@@ -56,44 +43,6 @@ if (!$result) {
         
         <?php if (mysqli_num_rows($result) > 0): ?>
             
-            <div class="tour-stats">
-                <div class="stat-item">
-                    <i class="fa fa-globe"></i>
-                    <div>
-                        <h3><?php echo mysqli_num_rows($result); ?></h3>
-                        <p>Tours Completed</p>
-                    </div>
-                </div>
-                <div class="stat-item">
-                    <i class="fa fa-users"></i>
-                    <div>
-                        <?php
-                        // Calculate total participants
-                        $total_participants = 0;
-                        mysqli_data_seek($result, 0);
-                        while ($row = mysqli_fetch_assoc($result)) {
-                            $total_participants += $row['participants'];
-                        }
-                        mysqli_data_seek($result, 0);
-                        ?>
-                        <h3><?php echo $total_participants; ?>+</h3>
-                        <p>Happy Travelers</p>
-                    </div>
-                </div>
-                <div class="stat-item">
-                    <i class="fa fa-camera"></i>
-                    <div>
-                        <?php
-                        // Count total media
-                        $media_query = "SELECT COUNT(*) as total FROM past_tour_media";
-                        $media_result = mysqli_query($con, $media_query);
-                        $media_count = mysqli_fetch_assoc($media_result)['total'];
-                        ?>
-                        <h3><?php echo $media_count; ?>+</h3>
-                        <p>Memories Captured</p>
-                    </div>
-                </div>
-            </div>
 
             <!-- Tour Cards Grid -->
             <div class="tour-cards-wrapper">
