@@ -1,17 +1,19 @@
 ﻿<?php
 /**
  * ============================================================================
- * PAST TOUR DETAILS PAGE
+ * TOUR DETAILS PAGE - UNIFIED SYSTEM
  * ============================================================================
  * 
  * IMAGE STORAGE STANDARD:
- * - All images loaded from: /uploads/past_tours/
- * - Cover images: /uploads/past_tours/covers/
- * - Gallery images: /uploads/past_tours/gallery/
- * - Database stores relative paths (e.g., uploads/past_tours/gallery/image.jpg)
+ * - All images loaded from: /uploads/tours/
+ * - Cover images: /uploads/tours/covers/
+ * - Gallery images: /uploads/tours/gallery/
+ * - Database stores relative paths (e.g., uploads/tours/gallery/image.jpg)
  * 
- * IMPORTANT: Images are managed by admin panel (admin_past_tours.php)
+ * IMPORTANT: Images are managed by admin panel (admin_tours.php)
  * Do NOT hardcode paths - always read from database
+ * 
+ * This page works for BOTH upcoming and past tours
  * 
  * ============================================================================
  */
@@ -21,16 +23,17 @@ include("functions.php");
 include("header.php");
 include("db.php");
 
-// Get tour ID from URL
+// Get tour ID from URL - support both 'tour_id' and 'tour' parameters
 $tour_id = isset($_GET['tour_id']) ? intval($_GET['tour_id']) : 0;
+$tour_id = $tour_id ?: (isset($_GET['tour']) ? intval($_GET['tour']) : 0);
 
 if ($tour_id <= 0) {
     header("Location: pasttours.php");
     exit();
 }
 
-// Fetch tour details using prepared statement
-$stmt = mysqli_prepare($con, "SELECT * FROM past_tours WHERE id = ? AND status = 1");
+// Fetch tour details from unified tours table
+$stmt = mysqli_prepare($con, "SELECT * FROM tours WHERE id = ? AND status = 1");
 mysqli_stmt_bind_param($stmt, "i", $tour_id);
 mysqli_stmt_execute($stmt);
 $result = mysqli_stmt_get_result($stmt);
@@ -41,9 +44,10 @@ if (mysqli_num_rows($result) == 0) {
 }
 
 $tour = mysqli_fetch_assoc($result);
+mysqli_stmt_close($stmt);
 
 // Fetch tour media ordered by display_order
-$media_stmt = mysqli_prepare($con, "SELECT * FROM past_tour_media WHERE tour_id = ? ORDER BY display_order ASC");
+$media_stmt = mysqli_prepare($con, "SELECT * FROM tour_media WHERE tour_id = ? ORDER BY display_order ASC, id ASC");
 mysqli_stmt_bind_param($media_stmt, "i", $tour_id);
 mysqli_stmt_execute($media_stmt);
 $media_result = mysqli_stmt_get_result($media_stmt);
@@ -74,17 +78,20 @@ while ($media = mysqli_fetch_assoc($media_result)) {
 $hero_image_url = '';
 if ($hero_media && !empty($hero_media['media_url']) && file_exists($hero_media['media_url'])) {
     $hero_image_url = $hero_media['media_url'];
-} elseif (!empty($tour['cover_media']) && file_exists($tour['cover_media'])) {
-    $hero_image_url = $tour['cover_media'];
+} elseif (!empty($tour['cover_image']) && file_exists($tour['cover_image'])) {
+    $hero_image_url = $tour['cover_image'];
 } else {
-    $hero_image_url = 'img/tours/default-past-tour.jpg';
+    $hero_image_url = 'img/tours/default-tour.jpg';
 }
+
+// Set active menu based on tour status
+$active = $tour['tour_status'] == 'past' ? 'pasttours' : 'home';
 ?>
 
 <head>
     <link rel="stylesheet" href="css/past_tour_details.css">
     <meta property="og:title" content="<?php echo htmlspecialchars($tour['title']); ?>">
-    <meta property="og:description" content="<?php echo htmlspecialchars($tour['summary']); ?>">
+    <meta property="og:description" content="<?php echo htmlspecialchars($tour['description']); ?>">
 </head>
 
 <!-- Hero Section with Featured Image/Video -->
@@ -92,6 +99,10 @@ if ($hero_media && !empty($hero_media['media_url']) && file_exists($hero_media['
     <div class="hero-overlay">
         <div class="hero-content">
             
+            <!-- Tour Status Badge -->
+            <div class="tour-status-badge badge-<?php echo $tour['tour_status']; ?>">
+                <?php echo ucfirst($tour['tour_status']); ?> Tour
+            </div>
             
             <h1 class="tour-hero-title"><?php echo htmlspecialchars($tour['title']); ?></h1>
             
@@ -109,10 +120,20 @@ if ($hero_media && !empty($hero_media['media_url']) && file_exists($hero_media['
                         ?>
                     </span>
                 </div>
+                <div class="meta-item">
+                    <i class="fa fa-clock-o"></i>
+                    <span><?php echo $tour['duration']; ?> Days</span>
+                </div>
                 <?php if ($tour['participants'] > 0): ?>
                 <div class="meta-item">
                     <i class="fa fa-users"></i>
                     <span><?php echo $tour['participants']; ?> Participants</span>
+                </div>
+                <?php endif; ?>
+                <?php if (!empty($tour['price'])): ?>
+                <div class="meta-item">
+                    <i class="fa fa-dollar"></i>
+                    <span><?php echo htmlspecialchars($tour['price']); ?></span>
                 </div>
                 <?php endif; ?>
             </div>
@@ -130,7 +151,7 @@ if ($hero_media && !empty($hero_media['media_url']) && file_exists($hero_media['
     <div class="container">
         <div class="summary-content">
             <h2>About This Journey</h2>
-            <p class="summary-text"><?php echo nl2br(htmlspecialchars($tour['summary'])); ?></p>
+            <p class="summary-text"><?php echo nl2br(htmlspecialchars($tour['description'])); ?></p>
         </div>
     </div>
 </section>
@@ -151,7 +172,7 @@ if ($hero_media && !empty($hero_media['media_url']) && file_exists($hero_media['
                         <?php 
                         /**
                          * GALLERY IMAGE LOADING:
-                         * - Images stored in: uploads/past_tours/gallery/
+                         * - Images stored in: uploads/tours/gallery/
                          * - Check file existence before displaying
                          * - Show placeholder if file not found
                          */
@@ -195,7 +216,7 @@ if ($hero_media && !empty($hero_media['media_url']) && file_exists($hero_media['
             <?php foreach ($video_media as $video): ?>
                 <div class="video-item">
                     <div class="video-wrapper">
-                        <?php if (strpos($video['media_url'], 'youtube.com') !== false || strpos($video['media_url'], 'youtu.be') !== false): ?>
+                        <?php if (strpos($video['media_url'], 'youtube.com') !== false || strpos($video['media_url'], 'youtu.be') !== false || strpos($video['media_url'], 'embed') !== false): ?>
                             <iframe src="<?php echo htmlspecialchars($video['media_url']); ?>" 
                                     frameborder="0" 
                                     allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" 
@@ -223,16 +244,29 @@ if ($hero_media && !empty($hero_media['media_url']) && file_exists($hero_media['
 <section class="cta-section">
     <div class="container">
         <div class="cta-content">
-            <h2>Ready for Your Own Adventure?</h2>
-            <p>Join us on our next educational journey and create unforgettable memories</p>
-            <div class="cta-buttons">
-                <a href="index.php" class="btn-primary">
-                    <i class="fa fa-compass"></i> View Upcoming Tours
-                </a>
-                <a href="pasttours.php" class="btn-secondary">
-                    <i class="fa fa-history"></i> More Past Tours
-                </a>
-            </div>
+            <?php if ($tour['tour_status'] == 'past'): ?>
+                <h2>Ready for Your Own Adventure?</h2>
+                <p>Join us on our next educational journey and create unforgettable memories</p>
+                <div class="cta-buttons">
+                    <a href="index.php" class="btn-primary">
+                        <i class="fa fa-compass"></i> View Upcoming Tours
+                    </a>
+                    <a href="pasttours.php" class="btn-secondary">
+                        <i class="fa fa-history"></i> More Past Tours
+                    </a>
+                </div>
+            <?php else: ?>
+                <h2>Interested in This Tour?</h2>
+                <p>Contact us to learn more about this upcoming educational journey</p>
+                <div class="cta-buttons">
+                    <a href="contact.php" class="btn-primary">
+                        <i class="fa fa-envelope"></i> Contact Us
+                    </a>
+                    <a href="index.php" class="btn-secondary">
+                        <i class="fa fa-compass"></i> View All Tours
+                    </a>
+                </div>
+            <?php endif; ?>
         </div>
     </div>
 </section>
@@ -319,7 +353,69 @@ document.addEventListener('DOMContentLoaded', function() {
 });
 </script>
 
+<style>
+/* Additional styles for tour status badge */
+.tour-status-badge {
+    display: inline-block;
+    padding: 8px 20px;
+    border-radius: 20px;
+    font-weight: 600;
+    font-size: 14px;
+    margin-bottom: 20px;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+}
+
+.badge-upcoming {
+    background: rgba(33, 150, 243, 0.9);
+    color: white;
+}
+
+.badge-past {
+    background: rgba(156, 39, 176, 0.9);
+    color: white;
+}
+
+/* Ensure meta items are responsive */
+.tour-hero-meta {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 20px;
+    justify-content: center;
+    margin-top: 20px;
+}
+
+.meta-item {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    background: rgba(255, 255, 255, 0.1);
+    padding: 10px 15px;
+    border-radius: 20px;
+    backdrop-filter: blur(10px);
+}
+
+.meta-item i {
+    font-size: 16px;
+}
+
+/* Responsive adjustments */
+@media (max-width: 768px) {
+    .tour-hero-meta {
+        flex-direction: column;
+        align-items: center;
+    }
+    
+    .meta-item {
+        width: 100%;
+        max-width: 300px;
+        justify-content: center;
+    }
+}
+</style>
+
 <?php
+mysqli_stmt_close($media_stmt);
 mysqli_close($con);
 include("footer.php");
 ?>

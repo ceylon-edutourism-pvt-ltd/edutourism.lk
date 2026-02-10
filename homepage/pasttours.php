@@ -1,27 +1,14 @@
 ﻿<?php
-/**
- * ============================================================================
- * PAST TOURS - PUBLIC LISTING PAGE
- * ============================================================================
- * 
- * IMAGE STORAGE STANDARD:
- * - All images are loaded from: /uploads/past_tours/
- * - Cover images: /uploads/past_tours/covers/
- * - These paths are set by admin panel (admin_past_tours.php)
- * - Database stores relative paths: uploads/past_tours/covers/filename.jpg
- * 
- * IMPORTANT: Do NOT hardcode image paths. Always read from database.
- * 
- * ============================================================================
- */
-
 $active = "pasttours"; 
 include("functions.php");
 include("header.php");
 include("db.php");
 
-// Fetch past tours from database - ordered by most recent first
-$query = "SELECT * FROM past_tours WHERE status = 1 ORDER BY start_date DESC";
+// Fetch past tours from unified tours table - ordered by most recent first
+$query = "SELECT * FROM tours 
+          WHERE status = 1 
+          AND tour_status = 'past' 
+          ORDER BY start_date DESC";
 $result = mysqli_query($con, $query);
 
 // Check for query errors
@@ -35,15 +22,12 @@ if (!$result) {
     <link rel="stylesheet" href="css/tourcard.css">
 </head>
 
-
-
 <!-- Past Tours Grid Section -->
 <section class="past-tours-section">
     <div class="tour-container">
         
         <?php if (mysqli_num_rows($result) > 0): ?>
             
-
             <!-- Tour Cards Grid -->
             <div class="tour-cards-wrapper">
                 <?php while ($tour = mysqli_fetch_assoc($result)): ?>
@@ -55,21 +39,22 @@ if (!$result) {
                                 
                                 <!-- Card Image -->
                                 <div class="tour-card-image">
+                                    <!-- Year Badge -->
                                     <div class="tour-year-badge">
-                                        <?php echo date('Y', strtotime($tour['start_date'])); ?>
+                                        <?php echo $tour['year']; ?>
                                     </div>
                                     
                                     <?php 
                                     /**
                                      * IMAGE LOADING LOGIC:
-                                     * - Cover images are stored in: uploads/past_tours/covers/
-                                     * - Database field 'cover_media' contains relative path
-                                     * - Example: "uploads/past_tours/covers/cover_abc123.jpg"
+                                     * - Cover images are stored in: uploads/tours/covers/
+                                     * - Database field 'cover_image' contains relative path
+                                     * - Example: "uploads/tours/covers/cover_abc123.jpg"
                                      * - Check if file exists before displaying
                                      */
-                                    if (!empty($tour['cover_media']) && file_exists($tour['cover_media'])): 
+                                    if (!empty($tour['cover_image']) && file_exists($tour['cover_image'])): 
                                     ?>
-                                        <img src="<?php echo htmlspecialchars($tour['cover_media']); ?>" 
+                                        <img src="<?php echo htmlspecialchars($tour['cover_image']); ?>" 
                                              alt="<?php echo htmlspecialchars($tour['title']); ?>"
                                              loading="lazy">
                                     <?php else: ?>
@@ -108,7 +93,7 @@ if (!$result) {
                                         </div>
                                         
                                         <p class="tour-description">
-                                            <?php echo htmlspecialchars($tour['summary']); ?>
+                                            <?php echo htmlspecialchars($tour['description']); ?>
                                         </p>
                                         
                                         <?php if ($tour['participants'] > 0): ?>

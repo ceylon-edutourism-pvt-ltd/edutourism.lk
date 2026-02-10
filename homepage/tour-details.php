@@ -1,7 +1,6 @@
 <?php
 $active = "home"; 
 include("functions.php");
-include("language.php");
 include("header.php");
 include("db.php");
 
@@ -9,7 +8,7 @@ include("db.php");
 $tour_id = isset($_GET['tour']) ? (int)$_GET['tour'] : 0;
 
 // Fetch tour details from database
-$tour_query = "SELECT * FROM tours WHERE id = $tour_id LIMIT 1";
+$tour_query = "SELECT * FROM tours WHERE id = $tour_id AND status = 1 LIMIT 1";
 $tour_result = mysqli_query($con, $tour_query);
 
 // Check if tour exists
@@ -21,6 +20,14 @@ if (mysqli_num_rows($tour_result) == 0) {
 
 $tour = mysqli_fetch_assoc($tour_result);
 
+// Fetch tour media (gallery images and videos)
+$media_query = "SELECT * FROM tour_media WHERE tour_id = $tour_id ORDER BY display_order ASC";
+$media_result = mysqli_query($con, $media_query);
+$tour_media = [];
+while ($media = mysqli_fetch_assoc($media_result)) {
+    $tour_media[] = $media;
+}
+
 // Language support
 $lang = isset($_SESSION['site_language']) ? $_SESSION['site_language'] : 'en';
 
@@ -30,38 +37,47 @@ $detail_texts = [
         'tour_details' => 'Tour Details',
         'destination' => 'Destination',
         'duration' => 'Duration',
-        'date_range' => 'Date Range',
+        'start_date' => 'Start Date',
+        'end_date' => 'End Date',
         'days' => 'Days',
-        'tour_type' => 'Tour Type',
+        'tour_year' => 'Year',
         'status' => 'Status',
         'description' => 'Description',
-        'combined' => 'Combined Package',
-        'premium' => 'Premium Experience',
-        'regular' => 'Regular Tour',
-        'upcoming' => 'Upcoming',
-        'active' => 'Active',
+        'upcoming' => 'Upcoming Tour',
+        'past' => 'Past Tour',
+        'participants' => 'Participants',
+        
         'contact_us' => 'Contact Us for More Information',
-        'overview' => 'Tour Overview'
+        'overview' => 'Tour Overview',
+        'gallery' => 'Tour Gallery',
+        'tour_information' => 'Tour Information'
     ],
     'si' => [
         'back_to_tours' => 'සංචාර වෙත ආපසු',
         'tour_details' => 'සංචාර විස්තර',
         'destination' => 'ගමනාන්තය',
         'duration' => 'කාලසීමාව',
-        'date_range' => 'Date Range',
+        'start_date' => 'ආරම්භක දිනය',
+        'end_date' => 'අවසාන දිනය',
         'days' => 'දින',
-        'tour_type' => 'සංචාර වර්ගය',
+        'tour_year' => 'වර්ෂය',
         'status' => 'තත්ත්වය',
         'description' => 'විස්තර',
-        'combined' => 'ඒකාබද්ධ පැකේජය',
-        'premium' => 'ප්‍රිමියම් අත්දැකීම',
-        'regular' => 'සාමාන්‍ය සංචාරය',
-        'upcoming' => 'ඉදිරියට',
-        'active' => 'ක්‍රියාත්මක',
+        'upcoming' => 'ඉදිරි සංචාරය',
+        'past' => 'අතීත සංචාරය',
+        'participants' => 'සහභාගිවන්නන්',
+    
         'contact_us' => 'වැඩි විස්තර සඳහා අප අමතන්න',
-        'overview' => 'සංචාර දළ විශ්ලේෂණය'
+        'overview' => 'සංචාර දළ විශ්ලේෂණය',
+        'gallery' => 'සංචාර ගැලරිය',
+        'tour_information' => 'සංචාර තොරතුරු'
     ]
 ];
+
+// Format dates
+$start_date = date('M d, Y', strtotime($tour['start_date']));
+$end_date = date('M d, Y', strtotime($tour['end_date']));
+$date_range = $start_date . ' - ' . $end_date;
 ?>
 
 <head>
@@ -123,7 +139,7 @@ $detail_texts = [
             text-shadow: 2px 2px 4px rgba(0,0,0,0.5);
         }
 
-        .tour-type-badge {
+        .tour-status-badge {
             display: inline-block;
             padding: 8px 16px;
             border-radius: 20px;
@@ -132,16 +148,12 @@ $detail_texts = [
             margin-bottom: 15px;
         }
 
-        .tour-type-badge.combined {
-            background: linear-gradient(135deg, #ff7e00, #ff9f40);
-        }
-
-        .tour-type-badge.premium {
-            background: linear-gradient(135deg, #667eea, #764ba2);
-        }
-
-        .tour-type-badge.regular {
+        .tour-status-badge.upcoming {
             background: linear-gradient(135deg, #28a745, #20c997);
+        }
+
+        .tour-status-badge.past {
+            background: linear-gradient(135deg, #6c757d, #495057);
         }
 
         .tour-content {
@@ -205,12 +217,12 @@ $detail_texts = [
         }
 
         .contact-section {
-            /* background: linear-gradient(135deg, #667eea, #764ba2); */
             color: black;
             padding: 30px;
             border-radius: 12px;
             text-align: center;
             margin-top: 30px;
+            background: #f8f9fa;
         }
 
         .contact-section h3 {
@@ -219,7 +231,61 @@ $detail_texts = [
 
         .contact-section p {
             margin: 0;
-            opacity: 0.9;
+        }
+
+        /* Gallery Styles */
+        .tour-gallery {
+            background: white;
+            padding: 30px;
+            border-radius: 12px;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.08);
+            margin-bottom: 40px;
+        }
+
+        .gallery-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+            gap: 20px;
+            margin-top: 20px;
+        }
+
+        .gallery-item {
+            position: relative;
+            border-radius: 8px;
+            overflow: hidden;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+            transition: transform 0.3s ease;
+        }
+
+        .gallery-item:hover {
+            transform: translateY(-5px);
+        }
+
+        .gallery-item img {
+            width: 100%;
+            height: 200px;
+            object-fit: cover;
+        }
+
+        .gallery-item.video {
+            height: 200px;
+        }
+
+        .gallery-item iframe {
+            width: 100%;
+            height: 100%;
+            border: none;
+        }
+
+        .gallery-caption {
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            background: linear-gradient(transparent, rgba(0,0,0,0.7));
+            color: white;
+            padding: 10px;
+            font-size: 14px;
         }
 
         /* Responsive Design */
@@ -238,12 +304,26 @@ $detail_texts = [
             }
 
             .tour-main-content,
-            .tour-sidebar {
+            .tour-sidebar,
+            .tour-gallery {
                 padding: 20px;
             }
 
             .tour-details-container {
                 padding: 10px;
+            }
+
+            .gallery-grid {
+                grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
+                gap: 10px;
+            }
+
+            .gallery-item img {
+                height: 150px;
+            }
+
+            .gallery-item.video {
+                height: 150px;
             }
         }
 
@@ -275,21 +355,23 @@ $detail_texts = [
 
     <!-- Tour Hero Section -->
     <div class="tour-hero">
-        <?php if (!empty($tour['image_path']) && file_exists($tour['image_path'])): ?>
-            <img src="<?php echo htmlspecialchars($tour['image_path']); ?>" alt="<?php echo htmlspecialchars($tour['title_' . $lang]); ?>" class="tour-hero-image">
+        <?php if (!empty($tour['cover_image']) && file_exists($tour['cover_image'])): ?>
+            <img src="<?php echo htmlspecialchars($tour['cover_image']); ?>" 
+                 alt="<?php echo htmlspecialchars($tour['title']); ?>" 
+                 class="tour-hero-image">
         <?php else: ?>
-            <img src="img/tours/default-tour.png" alt="<?php echo htmlspecialchars($tour['title_' . $lang]); ?>" class="tour-hero-image">
+            <img src="img/tours/default-tour.png" 
+                 alt="<?php echo htmlspecialchars($tour['title']); ?>" 
+                 class="tour-hero-image">
         <?php endif; ?>
         
         <div class="tour-hero-overlay">
-            <?php if ($tour['tour_type'] != 'regular'): ?>
-                <div class="tour-type-badge <?php echo $tour['tour_type']; ?>">
-                    <?php echo $detail_texts[$lang][$tour['tour_type']]; ?>
-                </div>
-            <?php endif; ?>
-            <h1><?php echo htmlspecialchars($tour['title_' . $lang]); ?></h1>
+            <div class="tour-status-badge <?php echo $tour['tour_status']; ?>">
+                <?php echo $detail_texts[$lang][$tour['tour_status']]; ?>
+            </div>
+            <h1><?php echo htmlspecialchars($tour['title']); ?></h1>
             <div class="">
-                <span><i class="fa fa-calendar"></i> <?php echo htmlspecialchars($tour['date_range']); ?></span>&nbsp&nbsp&nbsp&nbsp
+                <span><i class="fa fa-calendar"></i> <?php echo htmlspecialchars($date_range); ?></span>&nbsp&nbsp&nbsp&nbsp
                 <span><i class="fa fa-map-marker"></i> <?php echo htmlspecialchars($tour['destination']); ?></span>
                 <span style="margin-left: 20px;"><i class="fa fa-clock-o"></i> <?php echo $tour['duration']; ?> <?php echo $detail_texts[$lang]['days']; ?></span>
             </div>
@@ -302,13 +384,13 @@ $detail_texts = [
         <div class="tour-main-content">
             <h2 class="section-title"><?php echo $detail_texts[$lang]['overview']; ?></h2>
             <div class="tour-description">
-                <p><?php echo nl2br(htmlspecialchars($tour['description_' . $lang])); ?></p>
+                <p><?php echo nl2br(htmlspecialchars($tour['description'])); ?></p>
             </div>
         </div>
 
         <!-- Right Column - Sidebar -->
         <div class="tour-sidebar">
-            <h3 class="section-title"><?php echo $detail_texts[$lang]['tour_details']; ?></h3>
+            <h3 class="section-title"><?php echo $detail_texts[$lang]['tour_information']; ?></h3>
             
             <div class="tour-info-item">
                 <span class="info-label">
@@ -326,17 +408,35 @@ $detail_texts = [
 
             <div class="tour-info-item">
                 <span class="info-label">
-                    <i class="fa fa-calendar"></i> <?php echo $detail_texts[$lang]['date_range']; ?>
+                    <i class="fa fa-calendar"></i> <?php echo $detail_texts[$lang]['start_date']; ?>
                 </span>
-                <span class="info-value"><?php echo $tour['date_range']; ?> </span>
+                <span class="info-value"><?php echo $start_date; ?></span>
             </div>
 
             <div class="tour-info-item">
                 <span class="info-label">
-                    <i class="fa fa-tag"></i> <?php echo $detail_texts[$lang]['tour_type']; ?>
+                    <i class="fa fa-calendar"></i> <?php echo $detail_texts[$lang]['end_date']; ?>
                 </span>
-                <span class="info-value"><?php echo $detail_texts[$lang][$tour['tour_type']]; ?></span>
+                <span class="info-value"><?php echo $end_date; ?></span>
             </div>
+
+            <div class="tour-info-item">
+                <span class="info-label">
+                    <i class="fa fa-calendar-o"></i> <?php echo $detail_texts[$lang]['tour_year']; ?>
+                </span>
+                <span class="info-value"><?php echo $tour['year']; ?></span>
+            </div>
+
+            <?php if ($tour['tour_status'] == 'past' && $tour['participants'] > 0): ?>
+            <div class="tour-info-item">
+                <span class="info-label">
+                    <i class="fa fa-users"></i> <?php echo $detail_texts[$lang]['participants']; ?>
+                </span>
+                <span class="info-value"><?php echo $tour['participants']; ?></span>
+            </div>
+            <?php endif; ?>
+
+            
 
             <div class="tour-info-item">
                 <span class="info-label">
@@ -352,6 +452,43 @@ $detail_texts = [
             </div>
         </div>
     </div>
+
+    <!-- Gallery Section -->
+    <?php if (!empty($tour_media)): ?>
+    <div class="tour-gallery">
+        <h2 class="section-title"><?php echo $detail_texts[$lang]['gallery']; ?></h2>
+        <div class="gallery-grid">
+            <?php foreach ($tour_media as $media): ?>
+                <?php if ($media['media_type'] == 'image'): ?>
+                    <div class="gallery-item">
+                        <?php if (file_exists($media['media_url'])): ?>
+                            <img src="<?php echo htmlspecialchars($media['media_url']); ?>" 
+                                 alt="<?php echo htmlspecialchars($media['caption'] ?? 'Tour image'); ?>">
+                        <?php else: ?>
+                            <img src="img/tours/placeholder.jpg" 
+                                 alt="<?php echo htmlspecialchars($media['caption'] ?? 'Tour image'); ?>">
+                        <?php endif; ?>
+                        <?php if (!empty($media['caption'])): ?>
+                            <div class="gallery-caption">
+                                <?php echo htmlspecialchars($media['caption']); ?>
+                            </div>
+                        <?php endif; ?>
+                    </div>
+                <?php elseif ($media['media_type'] == 'video'): ?>
+                    <div class="gallery-item video">
+                        <iframe src="<?php echo htmlspecialchars($media['media_url']); ?>" 
+                                allowfullscreen></iframe>
+                        <?php if (!empty($media['caption'])): ?>
+                            <div class="gallery-caption">
+                                <?php echo htmlspecialchars($media['caption']); ?>
+                            </div>
+                        <?php endif; ?>
+                    </div>
+                <?php endif; ?>
+            <?php endforeach; ?>
+        </div>
+    </div>
+    <?php endif; ?>
 </div>
 
 <?php include("footer.php"); ?>
@@ -374,6 +511,11 @@ $(document).ready(function() {
             var yPos = -(scrolled * speed);
             parallax.css('transform', 'translate3d(0, ' + yPos + 'px, 0)');
         }
+    });
+
+    // Gallery lightbox effect (optional - add lightbox library if needed)
+    $('.gallery-item img').click(function() {
+        // Add your lightbox code here
     });
 });
 </script>

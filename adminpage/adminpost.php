@@ -1,36 +1,4 @@
 <?php
-/**
- * ============================================================================
- * UNIFIED TOURS ADMIN - SINGLE MANAGEMENT SYSTEM
- * ============================================================================
- * 
- * PURPOSE:
- * - Manage ALL tours (upcoming & past) in ONE interface
- * - Manage media gallery (images & videos) for each tour
- * - English-only interface (NO dual-language)
- * - Simplified tour management (NO categories, NO form generation)
- * 
- * IMAGE STORAGE STANDARD:
- * - All images stored in: /uploads/tours/
- * - Cover images: /uploads/tours/covers/
- * - Gallery images: /uploads/tours/gallery/
- * - Database stores relative paths: uploads/tours/covers/filename.jpg
- * 
- * ACTIONS HANDLED:
- * - list (default) - Show all tours with filters
- * - add - Add new tour form
- * - edit - Edit tour form
- * - save - Save new/edited tour
- * - delete - Delete tour
- * - media - Manage media for a tour
- * - add_media - Add new media item
- * - delete_media - Delete media item
- * - update_caption - Update media caption
- * - update_order - Update media display order
- * 
- * ============================================================================
- */
-
 session_start();
 
 // Authentication check
@@ -40,10 +8,6 @@ if (!isset($_SESSION['user'])) {
 }
 
 require_once('../homepage/db.php');
-
-// ============================================================================
-// CONFIGURATION
-// ============================================================================
 
 define('UPLOAD_DIR', '../homepage/uploads/tours/');
 define('COVER_DIR', UPLOAD_DIR . 'covers/');
@@ -67,10 +31,6 @@ $error = '';
 // Get action from URL
 $action = $_GET['action'] ?? 'list';
 $tour_id = isset($_GET['id']) ? (int)$_GET['id'] : 0;
-
-// ============================================================================
-// DELETE TOUR
-// ============================================================================
 
 if ($action == 'delete' && $tour_id > 0) {
     // Get tour data
@@ -506,8 +466,8 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_POST['update_order'])) {
     <div class="container">
         <div class="row align-items-center">
             <div class="col-md-8">
-                <h2><i class="fas fa-plane-departure"></i> Tours Management System</h2>
-                <p class="mb-0">Unified admin for all tours | English only | Professional interface</p>
+                <h2>Tours Management System</h2>
+                
             </div>
             <div class="col-md-4 text-end">
                 <a href="adminmain.php" class="btn btn-outline-light">
@@ -626,14 +586,7 @@ switch ($action) {
                     </div>
                     
                     <div class="row">
-                        <!-- Price -->
-                        <div class="col-md-4 mb-3">
-                            <label class="form-label"><i class="fas fa-dollar-sign"></i> Price</label>
-                            <input type="text" name="price" class="form-control"
-                                   value="<?php echo $edit_tour ? htmlspecialchars($edit_tour['price']) : ''; ?>"
-                                   placeholder="e.g., $1,200">
-                            <small class="text-muted">Leave empty if not applicable</small>
-                        </div>
+                        
                         
                         <!-- Participants -->
                         <div class="col-md-4 mb-3">

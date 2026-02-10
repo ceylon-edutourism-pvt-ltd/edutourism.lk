@@ -4,16 +4,20 @@ include("functions.php");
 include("header.php");
 include("hero_section.php");
 include("db.php");
-// Fetch active tours from database
-$tours_query = "SELECT * FROM tours WHERE status = 'active' AND tour_status = 'upcoming' ORDER BY created_at DESC";
+
+// Fetch active upcoming tours from unified tours table
+$tours_query = "SELECT * FROM tours 
+                WHERE status = 1 
+                AND tour_status = 'upcoming' 
+                ORDER BY start_date ASC";
 $tours_result = mysqli_query($con, $tours_query);
 ?>
 <head>
   <link rel="stylesheet" href="css/index.css">
   <link rel="stylesheet" href="css/tourcard.css">
 </head>
-<!-- Hero Section Begin -->
-<!-- Tours Section for index.php with language support -->
+
+<!-- Tours Section for index.php - Upcoming Tours -->
 <section class="tour-showcase">
     <div class="tour-container">
         <div class="tour-section-heading">
@@ -25,39 +29,42 @@ $tours_result = mysqli_query($con, $tours_query);
             <?php if (mysqli_num_rows($tours_result) > 0): ?>
                 <?php while ($tour = mysqli_fetch_assoc($tours_result)): ?>
                     <!-- Dynamic Tour Card -->
-                    <div class="tour-card" data-destination="<?php echo htmlspecialchars($tour['category']); ?>" data-category="<?php echo htmlspecialchars($tour['category']); ?>">
-                        <a href="<?php echo ($tour['category'] == 'management') ? 'visa_documents.php' : 'tour-details.php?tour=' . $tour['id']; ?>" class="tour-card-link">
+                    <div class="tour-card" data-destination="<?php echo htmlspecialchars($tour['destination']); ?>">
+                        <a href="tour-details.php?tour=<?php echo $tour['id']; ?>" class="tour-card-link">
                             <div class="tour-card-inner">
                                 <div class="tour-card-image">
-                                    <?php if ($tour['tour_type'] == 'combined'): ?>
-                                        <div class="tour-discount-badge">Combined</div>
-                                    <?php elseif ($tour['tour_type'] == 'premium'): ?>
-                                        <div class="tour-discount-badge premium">Premium</div>
-                                    <?php endif; ?>
-                                    
-                                    <?php if (!empty($tour['image_path']) && file_exists($tour['image_path'])): ?>
-                                        <img src="<?php echo htmlspecialchars($tour['image_path']); ?>" alt="<?php echo htmlspecialchars($tour['title_en']); ?>">
+                                    <!-- Display cover image -->
+                                    <?php if (!empty($tour['cover_image']) && file_exists($tour['cover_image'])): ?>
+                                        <img src="<?php echo htmlspecialchars($tour['cover_image']); ?>" 
+                                             alt="<?php echo htmlspecialchars($tour['title']); ?>"
+                                             loading="lazy">
                                     <?php else: ?>
-                                        <img src="img/tours/default-tour.png" alt="<?php echo htmlspecialchars($tour['title_en']); ?>">
+                                        <img src="img/tours/default-tour.png" 
+                                             alt="<?php echo htmlspecialchars($tour['title']); ?>"
+                                             loading="lazy">
                                     <?php endif; ?>
                                 </div>
                                 <div class="tour-card-content">
                                     <div class="tour-card-header">
-                                        <h3 class="tour-title"><?php echo htmlspecialchars($tour['title_en']); ?></h3>
+                                        <h3 class="tour-title"><?php echo htmlspecialchars($tour['title']); ?></h3>
                                     </div>
                                     <div class="tour-details">
                                         <div class="tour-meta">
-                                            <span><i class="fa fa-clock-o"></i> <?php echo $tour['duration']; ?> Days</span>
-                                            <span><i class="fa fa-map-marker"></i> <?php echo htmlspecialchars($tour['destination']); ?></span>
+                                            <span>
+                                                <i class="fa fa-clock-o"></i> 
+                                                <?php echo $tour['duration']; ?> Days
+                                            </span>
+                                            <span>
+                                                <i class="fa fa-map-marker"></i> 
+                                                <?php echo htmlspecialchars($tour['destination']); ?>
+                                            </span>
                                         </div>
-                                        <p class="tour-description"><?php echo htmlspecialchars($tour['description_en']); ?></p>
+                                        <p class="tour-description">
+                                            <?php echo htmlspecialchars($tour['description']); ?>
+                                        </p>
                                     </div>
                                     <div class="tour-card-footer">
-                                        <div class="tour-price">
-                                            <?php if (!empty($tour['price'])): ?>
-                                                <span class="price"><?php echo htmlspecialchars($tour['price']); ?></span>
-                                            <?php endif; ?>
-                                        </div>
+                                        
                                         <div class="tour-action">
                                             <span>View Details</span>
                                             <i class="fa fa-arrow-right"></i>
@@ -73,8 +80,8 @@ $tours_result = mysqli_query($con, $tours_query);
                 <div class="col-12 text-center py-5">
                     <div class="no-tours-message">
                         <i class="fa fa-map-o fa-3x text-muted mb-3"></i>
-                        <h3 class="text-muted">No tours available at the moment</h3>
-                        <p class="text-muted">Please check back later for new tours.</p>
+                        <h3 class="text-muted">No upcoming tours available at the moment</h3>
+                        <p class="text-muted">Please check back later for new exciting tours.</p>
                     </div>
                 </div>
             <?php endif; ?>
@@ -84,8 +91,7 @@ $tours_result = mysqli_query($con, $tours_query);
 </section>
 
 <?php
-// Reset the result pointer for any additional usage
-mysqli_data_seek($tours_result, 0);
+mysqli_close($con);
 include("footer.php");
 ?>
 
@@ -130,10 +136,6 @@ $(document).ready(function() {
 
 <style>
 /* Additional styles for dynamic tours */
-.tour-discount-badge.premium {
-    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-}
-
 .no-tours-message {
     padding: 40px 20px;
     border-radius: 10px;
@@ -165,9 +167,5 @@ $(document).ready(function() {
     border-radius: 8px 8px 0 0;
 }
 
-.price {
-    font-weight: bold;
-    color: #e74c3c;
-    font-size: 1.1em;
-}
+
 </style>
